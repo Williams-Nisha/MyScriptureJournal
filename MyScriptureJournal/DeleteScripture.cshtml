@@ -1,0 +1,56 @@
+﻿@{
+    var db = Database.Open("ScriptureJournal");
+    var ProductId = UrlData[0];
+    if (ProductId.IsEmpty())
+    {
+        Response.Redirect("~/DeleteJournalRecord");
+    }
+    var journal = db.QuerySingle("SELECT * FROM Journal WHERE ID = @0", ProductId);
+    if (IsPost && !ProductId.IsEmpty())
+    {
+        if (Request.Form["delete"] != null)
+        {
+            var deleteQueryString = "DELETE FROM Journal WHERE Id=@0";
+            db.Execute(deleteQueryString, ProductId);
+            Response.Redirect("~/DeleteJournalRecord");
+        } else if (Request.Form["edit"] != null)
+        {
+            Response.Redirect("~/EditScriptureJournal");
+        } else if(Request.Form["view"] != null)
+        {
+            Response.Redirect("~/DisplayScriptureJournal");
+        }
+    }
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Delete Scripture</title>
+    <link href="~/styles/style.css" rel="stylesheet" />
+</head>
+<body>
+    <div class="container">
+        <header> <img src="~/images/logo.png" /></header>
+        <div class="nav"><a href="@Href("~/MyScriptureJournal")">Home</a></div>
+        <main>
+        <h1>Delete Scripture - Confirmation</h1>
+        <form method="post" action="" name="form">
+            <p>Are you sure you want to delete the following scripture?</p>
+
+            <p>
+                Book: @journal.Book <br />
+                Chapter: @journal.Chapter <br />
+                Verses: @journal.Verses <br />
+                Notes: @journal.Notes
+
+            </p>
+            <p><input type="submit" name="delete" value="Delete" />
+            <input type="submit" name="edit" value="Edit" />
+            <input type="submit" name="view" value="View" /></p>
+        </form>
+        </main>
+        <footer>Copyright &copy; Nisha Williams 2017</footer>
+  </div>
+</body>
+</html>

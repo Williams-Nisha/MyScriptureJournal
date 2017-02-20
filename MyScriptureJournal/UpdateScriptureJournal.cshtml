@@ -1,0 +1,95 @@
+﻿@{
+
+    Validation.RequireField("Book", "Book is required.");
+    Validation.RequireField("Chapter", "Chapter is required.");
+    Validation.RequireField("Verses", "Verses price is required.");
+    Validation.RequireField("Notes", "Notes is required.");
+
+    var Book = "";
+    var Chapter = "";
+    var Verses = "";
+    var Notes = "";
+
+    var ProductId = UrlData[0];
+    if (ProductId.IsEmpty())
+    {
+        Response.Redirect("~/EditScriptureJournal");
+    }
+
+    var db = Database.Open("ScriptureJournal");
+
+    if (IsPost && Validation.IsValid())
+    {
+        var updateQueryString =
+            "UPDATE Journal SET Book=@0, Chapter=@1, Verses=@2, Notes=@3 WHERE Id=@4";
+        Book = Request["Book"];
+        Chapter = Request["Chapter"];
+        Verses = Request["Verses"];
+        Notes = Request["Notes"];
+        db.Execute(updateQueryString, Book, Chapter, Verses, Notes, ProductId);
+        Response.Redirect(@Href("~/EditScriptureJournal"));
+    }
+    else
+    {
+        var selectQueryString = "SELECT * FROM Journal WHERE Id=@0";
+
+        var row = db.QuerySingle(selectQueryString, ProductId);
+        Book = row.Book;
+        Chapter = row.Chapter;
+        Verses = row.Verses;
+        Notes = row.Notes;
+    }
+
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Update Scripture</title>
+    <link href="~/styles/style.css" rel="stylesheet" />
+</head>
+<body>
+    <div class="container">
+        <header>
+            <img src="~/images/logo.png" />
+        </header>
+        <div class="nav"><a href="@Href("~/MyScriptureJournal")">Home</a></div>
+        <main>
+            <h1>Update Scripture</h1>
+            <div class="@( IsPost == false ? "hide": "show")">
+                @Html.ValidationSummary("Errors with your submission:")
+            </div>
+            <form method="post" action="">
+                <fieldset>
+                    <legend>Update Scripture</legend>
+                    <div>
+                        <label>Book:</label>
+                        <input name="Book" type="text" size="50" value="@Book" />
+                    </div>
+                    <div>
+                        <label>Chapter:</label>
+                        <input name="Chapter" type="text" size="50"
+                               value="@Chapter" />
+                    </div>
+                    <div>
+                        <label>Verses:</label>
+                        <input name="Verses" type="text" size="50" value="@Verses" />
+                    </div>
+                    <div>
+                        <label>Notes:</label>
+                        <input name="Notes" type="text" size="50" value="@Notes" />
+                    </div>
+                    <div>
+                        <label>&nbsp;</label>
+                        <input type="submit" value="Update" class="submit" />
+                    </div>
+                </fieldset>
+            </form>
+            <p><a href="@Href("~/DeleteJournalRecord")">Delete Scripture</a>
+                <a href="@Href("~/DisplayScriptureJournal")">View Scriptures</a>
+            </p>
+        </main>
+        <footer>Copyright &copy; Nisha Williams 2017</footer>
+   </div>
+</body>
+</html>

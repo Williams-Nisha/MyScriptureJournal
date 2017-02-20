@@ -1,0 +1,101 @@
+﻿@{
+
+    Validation.RequireField("Book", "Book is required.");
+    Validation.RequireField("Chapter", "Chapter is required.");
+    Validation.RequireField("Verses", "Verses price is required.");
+    Validation.RequireField("Notes", "Notes is required.");
+
+    var db = Database.Open("ScriptureJournal");
+    var Book = Request.Form["Book"];
+    var Chapter = Request.Form["Chapter"];
+    var Verses = Request.Form["Verses"];
+    var Notes = Request.Form["Notes"];
+
+    var selectedData = db.Query("SELECT * FROM Journal");
+    var grid = new WebGrid(source: selectedData, rowsPerPage: 5);
+
+    if (IsPost && Validation.IsValid())
+    { 
+
+    // Define the insert query. The values to assign to the
+    // columns in the Product table are defined as parameters
+    // with the VALUES keyword.
+    if (ModelState.IsValid)
+    {
+        var insertQuery = "INSERT INTO Journal(Book, Chapter, Verses, Notes, Date) " +
+            "VALUES (@0, @1, @2, @3, @4)";
+        db.Execute(insertQuery, Book, Chapter, Verses, Notes, DateTime.Now);
+        // Display the page that lists products.
+
+        Response.Redirect("~/DisplayScriptureJournal");
+    }
+    }
+}
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>My Scripture Journal</title>
+        <link href="~/styles/style.css" rel="stylesheet" />
+    </head>
+    <body>
+        <div class="container">
+            <header>
+               <img src="~/images/logo.png" />
+            </header>
+            <div class="nav"><a href="@Href("~/MyScriptureJournal")">Home</a></div>
+            <main>
+                <h1>My Scripture Journal</h1>
+                <section>
+                    <h2>Add Scripture</h2>
+                    <div class="@( IsPost == false ? "hide": "show")">
+                        @Html.ValidationSummary("Errors with your submission:")
+                    </div>
+                    <form method="post" action="">
+                        <fieldset>
+                            <legend>Add Scripture</legend>
+                            <div>
+                                <label>Book:</label>
+                                <input name="Book" type="text" size="20" value="@Book" />
+                            </div>
+                            <div>
+                                <label>Chapter:</label>
+                                <input name="Chapter" type="text" size="20"
+                                       value="@Chapter" />
+                            </div>
+                            <div>
+                                <label>Verses:</label>
+                                <input name="Verses" type="text" size="5" value="@Verses" />
+                            </div>
+                            <div>
+                                <label>Notes:</label>
+                                <input name="Notes" type="text" size="50" value="@Notes" />
+                            </div>
+                            <div>
+                                <label>&nbsp;</label>
+                                <input type="submit" value="Insert" class="submit" />
+                            </div>
+                        </fieldset>
+                    </form>
+                </section>
+                <section>
+                    <h2>My Scriptures</h2>
+                    @grid.GetHtml(
+                        tableStyle: "grid",
+                        headerStyle: "head",
+                        alternatingRowStyle: "alt",
+                        columns: grid.Columns(
+                            grid.Column("Book"),
+                            grid.Column("Chapter"),
+                            grid.Column("Verses"),
+                            grid.Column("Notes"),
+                            grid.Column("Date", format: (item) => item.Date.ToString("MMM-dd-yy")
+                        )
+                    ))
+                </section>
+                <p><a href="@Href("~/EditScriptureJournal")">Edit Scriptures</a>
+                <a href="@Href("~/DisplayScriptureJournal")">Display Scriptures</a></p>
+            </main>
+             <footer>Copyright &copy; Nisha Williams 2017</footer>
+      </div>
+    </body>
+</html>

@@ -1,0 +1,106 @@
+﻿body {
+    background-color:#012D5A ;
+    margin: 0;
+    padding: 0;
+}
+ table, th, td {
+    border: solid 1px #bbbbbb;
+    border-collapse: collapse;
+    padding: 2px;
+}
+ label {
+    float: left;
+    width: 8em;
+    text-align: right;
+    margin-right: 0.5em;
+ }
+
+fieldset {
+    padding: 1em;
+    border: 1px solid;
+    width: 50em;
+}
+
+legend {
+    padding: 2px 4px;
+    border: 1px solid;
+    font-weight: bold;
+}
+h1 {
+    color:#012D5A;
+    padding: 0 20px 0;
+}
+h2 {
+    color: #EB752F;
+}
+footer {
+    background-color:#A5BB2A;
+    height: 30px;
+    color:#fff;
+    margin: 0 auto;
+    padding: 5px 20px 0 20px;
+}
+header {
+    background-color:#fff ;
+    height:120px;
+}
+
+main {
+    min-height: 600px;
+    padding: 20px;
+}
+.nav {
+    background-color: #A5BB2A;
+    height:30px;
+    padding: 10px 0 0 10px;
+}
+.nav a {
+    color: #fff;
+    text-decoration: none;
+    font-weight: bold;
+}
+.nav a:visited {
+    color: #fff;
+}
+.container {
+   width: 80%;
+    margin: 0 auto;
+    background-color: #fff;
+}
+
+.validation-summary-errors {
+    font-weight: bold;
+    color: red;
+    font-size: 11pt;
+}
+.hide {
+    display: none;
+}
+.show {
+    display: block;
+}
+.grid { 
+    margin: 4px; 
+    border-collapse: collapse; 
+    width: 800px; 
+    margin-bottom: 40px;
+}
+.grid th, .grid td { 
+    border: 1px solid #C0C0C0; 
+    padding: 10px; 
+    min-width: 75px;
+}
+.head { 
+    background-color: #A5BB2A; 
+    font-weight: bold; 
+    height: 40px;
+    color: #FFF; 
+}
+.head a {
+    color:#fff;
+}
+.alt { 
+    background-color: #f9ffd8; 
+    color: #000; 
+}
+  

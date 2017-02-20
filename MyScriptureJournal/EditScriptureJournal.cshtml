@@ -1,0 +1,49 @@
+﻿@{
+    var db = Database.Open("ScriptureJournal");
+    var selectQueryString = "SELECT * FROM Journal ORDER BY Book";
+
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Edit Products</title>
+    <link href="~/styles/style.css" rel="stylesheet" />
+</head>
+<body>
+    <div class="container">
+        <header> <img src="~/images/logo.png" /></header>
+        <div class="nav"><a href="@Href("~/MyScriptureJournal")">Home</a></div>
+        <main>
+            <h1>Edit Scripture Journal</h1>
+            <table>
+                <thead>
+                    <tr>
+                        <th>&nbsp;</th>
+                        <th>Book</th>
+                        <th>Chapter</th>
+                        <th>Verses</th>
+                        <th>Notes</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var row in db.Query(selectQueryString))
+                    {
+                        <tr>
+                            <td><a href="@Href("~/UpdateScriptureJournal", row.Id)">Edit</a></td>
+                            <td>@row.Book</td>
+                            <td>@row.Chapter</td>
+                            <td>@row.Verses</td>
+                            <td>@row.Notes</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+            <p>
+                <a href="@Href("~/MyScriptureJournal")">Add New Scriptures</a>
+                <a href="@Href("~/DeleteJournalRecord")">Delete Scripture</a>
+            </p>
+        </main>
+        <footer>Copyright &copy; Nisha Williams 2017</footer>
+       </div>
+</body>
+</html>
